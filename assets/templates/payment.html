@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh toán - Music Store</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <a href="index.php" class="logo">
+                <i class="fas fa-music"></i> Music Store
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.php">Trang chủ</a></li>
+                <li><a href="products.php">Sản phẩm</a></li>
+                {{user_links}}
+            </ul>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <h1>Thanh toán</h1>
+
+        {{error_message}}
+        {{success_message}}
+
+        <div class="payment-container">
+            <div class="order-summary">
+                <h2>Đơn hàng của bạn</h2>
+                {{cart_items}}
+
+                <div class="order-total">
+                    <strong>Tổng cộng:</strong>
+                    <span class="total-amount">{{cart_total}}</span>
+                </div>
+            </div>
+
+            <div class="payment-form">
+                <h2>Thông tin thanh toán</h2>
+                <form method="POST" action="payment.php" id="payment-form">
+                    <div class="form-group">
+                        <label for="full_name" class="form-label">Họ và tên</label>
+                        <input type="text" id="full_name" name="full_name" 
+                               class="form-control" 
+                               value="{{user_full_name}}" 
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" name="email" 
+                               class="form-control" 
+                               value="{{user_email}}" 
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone" class="form-label">Số điện thoại</label>
+                        <input type="tel" id="phone" name="phone" 
+                               class="form-control" 
+                               value="{{user_phone}}" 
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="shipping_address" class="form-label">Địa chỉ giao hàng</label>
+                        <textarea id="shipping_address" name="shipping_address" 
+                                  class="form-control" 
+                                  rows="3" 
+                                  required>{{user_address}}</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Phương thức thanh toán</label>
+                        <div class="payment-methods">
+                            <label class="payment-method">
+                                <input type="radio" name="payment_method" value="cod" required>
+                                <span>Thanh toán khi nhận hàng (COD)</span>
+                            </label>
+                            <label class="payment-method">
+                                <input type="radio" name="payment_method" value="bank_transfer">
+                                <span>Chuyển khoản ngân hàng</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <a href="cart.php" class="btn btn-primary">Quay lại giỏ hàng</a>
+                        <button type="submit" class="btn btn-primary">Đặt hàng</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; {{current_year}} Music Store. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+    <script>
+        document.getElementById('payment-form').addEventListener('submit', function(e) {
+            if (!validateForm('payment-form')) {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Store - Cửa hàng nhạc cụ trực tuyến</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <a href="index.php" class="logo">
+                <i class="fas fa-music"></i> Music Store
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.php" class="active">Trang chủ</a></li>
+                <li><a href="products.php">Sản phẩm</a></li>
+                {{user_links}}
+            </ul>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Khám phá thế giới âm nhạc</h1>
+            <p>Chọn lựa từ hàng ngàn nhạc cụ chất lượng cao</p>
+            <a href="products.php" class="btn btn-primary">Mua sắm ngay</a>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories">
+        <div class="container">
+            <h2 class="section-title">Danh mục sản phẩm</h2>
+            <div class="category-grid">
+                {{categories_list}}
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="featured-products">
+        <div class="container">
+            <h2 class="section-title">Sản phẩm nổi bật</h2>
+            <div class="product-grid">
+                {{featured_products}}
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-grid">
+                    <div class="about-text">
+                        <h2 class="section-title">Về Music Store</h2>
+                        <p class="about-description">Music Store - Điểm đến lý tưởng cho những người yêu âm nhạc, nơi bạn có thể tìm thấy những nhạc cụ chất lượng cao từ các thương hiệu nổi tiếng thế giới.</p>
+                    </div>
+                    <div class="features">
+                        <div class="feature">
+                            <i class="fas fa-shipping-fast"></i>
+                            <h3>Giao hàng nhanh</h3>
+                            <p>Miễn phí vận chuyển từ 1 triệu</p>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-shield-alt"></i>
+                            <h3>Bảo hành chính hãng</h3>
+                            <p>Bảo hành 12 tháng</p>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-headset"></i>
+                            <h3>Hỗ trợ 24/7</h3>
+                            <p>Tư vấn chuyên nghiệp</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact">
+        <div class="container">
+            <h2 class="section-title">Liên hệ với chúng tôi</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h3>Địa chỉ</h3>
+                            <p>123 Đường ABC, Quận XYZ, TP. Hồ Chí Minh</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h3>Điện thoại</h3>
+                            <p>0123 456 789</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h3>Email</h3>
+                            <p>info@musicstore.com</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <form id="contact-form" method="POST" action="contact.php">
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" class="form-control" placeholder="Họ và tên" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" class="form-control" placeholder="Email" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="message" name="message" class="form-control" placeholder="Nội dung tin nhắn" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Gửi tin nhắn</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Music Store</h3>
+                    <p>Cửa hàng nhạc cụ trực tuyến hàng đầu Việt Nam</p>
+                    <div class="social-links">
+                        <a href="#" title="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Liên kết nhanh</h3>
+                    <ul>
+                        <li><a href="about.php">Giới thiệu</a></li>
+                        <li><a href="products.php">Sản phẩm</a></li>
+                        <li><a href="contact.php">Liên hệ</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; {{current_year}} Music Store. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+    <script>
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            if (!validateForm('contact-form')) {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html> 

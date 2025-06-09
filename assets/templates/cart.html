@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giỏ hàng - Music Store</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <a href="index.php" class="logo">
+                <i class="fas fa-music"></i> Music Store
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.php">Trang chủ</a></li>
+                <li><a href="products.php">Sản phẩm</a></li>
+                {{user_links}}
+            </ul>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <h1>Giỏ hàng</h1>
+
+        {{error_message}}
+        {{success_message}}
+
+        <div class="cart-container">
+            {{cart_items}}
+
+            <div class="cart-summary">
+                <div class="cart-total">
+                    <strong>Tổng cộng:</strong>
+                    <span class="total-amount">{{cart_total}}</span>
+                </div>
+
+                <div class="cart-actions">
+                    <a href="products.php" class="btn btn-outline">Tiếp tục mua sắm</a>
+                    <a href="payment.php" class="btn btn-primary">Thanh toán</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; {{current_year}} Music Store. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+</body>
+</html> 

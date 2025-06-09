@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sản phẩm - Music Store</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <a href="index.php" class="logo">
+                <i class="fas fa-music"></i> Music Store
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.php">Trang chủ</a></li>
+                <li><a href="products.php" class="active">Sản phẩm</a></li>
+                {{user_links}}
+            </ul>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <div class="products-header">
+            <h1>Sản phẩm</h1>
+            <div class="products-filter">
+                <select id="category-filter" class="form-control">
+                    <option value="all">Tất cả danh mục</option>
+                    {{category_options}}
+                </select>
+                <select id="sort-filter" class="form-control">
+                    <option value="newest">Mới nhất</option>
+                    <option value="price_asc">Giá tăng dần</option>
+                    <option value="price_desc">Giá giảm dần</option>
+                    <option value="name_asc">Tên A-Z</option>
+                </select>
+            </div>
+        </div>
+
+        {{error_message}}
+        {{success_message}}
+
+        <div class="products-grid">
+            {{products_list}}
+        </div>
+
+        <div class="pagination">
+            {{pagination}}
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; {{current_year}} Music Store. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+    <script>
+        // Xử lý filter sản phẩm
+        document.getElementById('category-filter').addEventListener('change', function() {
+            const category = this.value;
+            window.location.href = `products.php?category=${category}`;
+        });
+
+        document.getElementById('sort-filter').addEventListener('change', function() {
+            const sort = this.value;
+            const urlParams = new URLSearchParams(window.location.search);
+            urlParams.set('sort', sort);
+            window.location.href = `products.php?${urlParams.toString()}`;
+        });
+    </script>
+</body>
+</html> 
