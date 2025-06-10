@@ -186,7 +186,7 @@ function renderCartItems($items) {
     foreach ($items as $item) {
         $html .= '<div class="cart-item">';
         $html .= '<div class="cart-item-image">';
-        $html .= '<img src="' . $item['image_url'] . '" alt="' . $item['name'] . '">';
+        $html .= '<img src="' . (isset($item['image_url']) ? $item['image_url'] : 'images/default.png') . '" alt="' . $item['name'] . '">';
         $html .= '</div>';
         $html .= '<div class="cart-item-info">';
         $html .= '<h3>' . $item['name'] . '</h3>';
@@ -290,7 +290,7 @@ function renderProductsList($products) {
         $html .= '<div class="product-card">';
         $html .= '<a href="product.php?id=' . $product['id'] . '" class="product-link">';
         $html .= '<div class="product-image">';
-        $html .= '<img src="' . $product['image_url'] . '" alt="' . $product['name'] . '">';
+        $html .= '<img src="' . (isset($product['image_url']) ? $product['image_url'] : 'images/default.png') . '" alt="' . $product['name'] . '">';
         $html .= '</div>';
         $html .= '<div class="product-info">';
         $html .= '<h3 class="product-title">' . $product['name'] . '</h3>';

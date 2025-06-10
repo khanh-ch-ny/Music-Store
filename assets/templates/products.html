@@ -43,8 +43,8 @@
             </div>
         </div>
 
-        {{error_message}}
-        {{success_message}}
+        {% if error_message %}{{error_message}}{% endif %}
+        {% if success_message %}{{success_message}}{% endif %}
 
         <div class="products-grid">
             {{products_list}}
