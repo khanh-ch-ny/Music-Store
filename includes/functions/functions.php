@@ -1,10 +1,14 @@
 <?php
-session_start();
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 require_once __DIR__ . '/../config/db.php';
 
 // Check if user is logged in
 function isLoggedIn() {
-    return isset($_SESSION['user_id']);
+    return isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
 }
 
 // Check if user is admin
@@ -12,54 +16,80 @@ function isAdmin() {
     return isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1;
 }
 
-// Redirect function
+// Redirect function with session check
 function redirect($url) {
-    header("Location: $url");
-    exit();
+    if (!headers_sent()) {
+        header("Location: $url");
+        exit();
+    } else {
+        echo "<script>window.location.href='$url';</script>";
+        echo "<noscript><meta http-equiv='refresh' content='0;url=$url'></noscript>";
+        exit();
+    }
 }
 
 // Display error message
 function displayError($message) {
-    return "<div class='alert alert-danger'>$message</div>";
+    return "<div class='alert alert-danger'>" . htmlspecialchars($message) . "</div>";
 }
 
 // Display success message
 function displaySuccess($message) {
-    return "<div class='alert alert-success'>$message</div>";
+    return "<div class='alert alert-success'>" . htmlspecialchars($message) . "</div>";
 }
 
-// Get user data
+// Get user data with prepared statement
 function getUserData($user_id) {
-    $sql = "SELECT * FROM users WHERE id = $user_id";
-    return getRow($sql);
+    global $conn;
+    $stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_assoc();
 }
 
-// Get product data
+// Get product data with prepared statement
 function getProductData($product_id) {
-    $sql = "SELECT p.*, c.name as category_name 
-            FROM products p 
-            LEFT JOIN categories c ON p.category_id = c.id 
-            WHERE p.id = $product_id";
-    return getRow($sql);
+    global $conn;
+    $stmt = $conn->prepare("SELECT p.*, c.name as category_name 
+                           FROM products p 
+                           LEFT JOIN categories c ON p.category_id = c.id 
+                           WHERE p.id = ?");
+    $stmt->bind_param("i", $product_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_assoc();
 }
 
-// Get cart items for user
+// Get cart items with prepared statement
 function getCartItems($user_id) {
-    $sql = "SELECT c.*, p.name, p.price, p.image_url 
-            FROM cart c 
-            LEFT JOIN products p ON c.product_id = p.id 
-            WHERE c.user_id = $user_id";
-    return getRows($sql);
+    global $conn;
+    $stmt = $conn->prepare("SELECT c.*, p.name, p.price, p.image_url, p.stock 
+                           FROM cart c 
+                           LEFT JOIN products p ON c.product_id = p.id 
+                           WHERE c.user_id = ?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $items = [];
+    while ($row = $result->fetch_assoc()) {
+        $items[] = $row;
+    }
+    return $items;
 }
 
-// Calculate cart total
+// Calculate cart total with prepared statement
 function calculateCartTotal($user_id) {
-    $sql = "SELECT SUM(c.quantity * p.price) as total 
-            FROM cart c 
-            LEFT JOIN products p ON c.product_id = p.id 
-            WHERE c.user_id = $user_id";
-    $result = getRow($sql);
-    return $result['total'] ?? 0;
+    global $conn;
+    $stmt = $conn->prepare("SELECT SUM(c.quantity * p.price) as total 
+                           FROM cart c 
+                           LEFT JOIN products p ON c.product_id = p.id 
+                           WHERE c.user_id = ?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    return $row['total'] ?? 0;
 }
 
 // Format price
@@ -78,7 +108,7 @@ function generateRandomString($length = 10) {
         ceil($length/strlen($x)))), 1, $length);
 }
 
-// Upload image
+// Upload image with security checks
 function uploadImage($file, $targetDir = '../assets/images/products/') {
     if (!file_exists($targetDir)) {
         mkdir($targetDir, 0777, true);
@@ -103,6 +133,10 @@ function uploadImage($file, $targetDir = '../assets/images/products/') {
         return false;
     }
     
+    // Generate unique filename
+    $fileName = uniqid() . '.' . $fileType;
+    $targetPath = $targetDir . $fileName;
+    
     if (move_uploaded_file($file['tmp_name'], $targetPath)) {
         return $fileName;
     }
@@ -113,26 +147,49 @@ function uploadImage($file, $targetDir = '../assets/images/products/') {
 // Helper functions
 function sanitize($input) {
     global $conn;
+    if (is_array($input)) {
+        return array_map('sanitize', $input);
+    }
     return $conn->real_escape_string(trim($input));
 }
 
-// Database functions
-function executeQuery($sql) {
+// Database functions with error handling
+function executeQuery($sql, $params = [], $types = '') {
     global $conn;
-    $result = $conn->query($sql);
-    if (!$result) {
-        throw new Exception("Query failed: " . $conn->error);
+    try {
+        if (!empty($params)) {
+            $stmt = $conn->prepare($sql);
+            if ($types) {
+                $stmt->bind_param($types, ...$params);
+            }
+            $stmt->execute();
+            return $stmt;
+        } else {
+            $result = $conn->query($sql);
+            if (!$result) {
+                throw new Exception("Query failed: " . $conn->error);
+            }
+            return $result;
+        }
+    } catch (Exception $e) {
+        error_log("Database error: " . $e->getMessage());
+        throw $e;
     }
-    return $result;
 }
 
-function getRow($sql) {
-    $result = executeQuery($sql);
+function getRow($sql, $params = [], $types = '') {
+    $result = executeQuery($sql, $params, $types);
+    if ($result instanceof mysqli_stmt) {
+        $result = $result->get_result();
+    }
     return $result->fetch_assoc();
 }
 
-function getRows($sql) {
-    $result = executeQuery($sql);
+function getRows($sql, $params = [], $types = '') {
+    $result = executeQuery($sql, $params, $types);
+    if ($result instanceof mysqli_stmt) {
+        $result = $result->get_result();
+    }
     $rows = [];
     while ($row = $result->fetch_assoc()) {
         $rows[] = $row;
@@ -361,6 +418,63 @@ function renderReviewForm($product_id) {
     $html .= '<button type="submit" name="submit_review" class="btn btn-primary">Gửi đánh giá</button>';
     $html .= '</form>';
     
+    return $html;
+}
+
+function renderCategoriesList($categories) {
+    if (empty($categories)) {
+        return '<p class="no-categories">Không có danh mục nào.</p>';
+    }
+
+    $html = '';
+    foreach ($categories as $category) {
+        $html .= '<a href="/Music-Store/products.php?category=' . $category['id'] . '" class="category-card">';
+        $html .= '<i class="fas fa-music"></i>';
+        $html .= '<h3>' . htmlspecialchars($category['name']) . '</h3>';
+        if (!empty($category['description'])) {
+            $html .= '<p>' . htmlspecialchars($category['description']) . '</p>';
+        }
+        $html .= '</a>';
+    }
+    
+    return $html;
+}
+
+function renderFeaturedProducts($products) {
+    if (empty($products)) {
+        return '<p>Không có sản phẩm nổi bật.</p>';
+    }
+
+    $html = '';
+    foreach ($products as $product) {
+        $html .= '<div class="product-card">';
+        $html .= '<a href="/Music-Store/product.php?id=' . $product['id'] . '" class="product-link">';
+        $html .= '<div class="product-image">';
+        $html .= '<img src="/Music-Store/assets/images/products/' . $product['image'] . '" alt="' . $product['name'] . '">';
+        if ($product['stock'] <= 0) {
+            $html .= '<span class="out-of-stock">Hết hàng</span>';
+        }
+        $html .= '</div>';
+        $html .= '<div class="product-info">';
+        $html .= '<h3 class="product-title">' . $product['name'] . '</h3>';
+        $html .= '<p class="product-category">' . $product['category_name'] . '</p>';
+        $html .= '<p class="product-price">' . number_format($product['price']) . ' VNĐ</p>';
+        $html .= '</div>';
+        $html .= '</a>';
+        $html .= '<div class="product-actions">';
+        if ($product['stock'] > 0) {
+            $html .= '<form method="POST" action="/Music-Store/cart.php" class="add-to-cart-form">';
+            $html .= '<input type="hidden" name="product_id" value="' . $product['id'] . '">';
+            $html .= '<button type="submit" name="add_to_cart" class="btn btn-primary">';
+            $html .= '<i class="fas fa-cart-plus"></i> Thêm vào giỏ';
+            $html .= '</button>';
+            $html .= '</form>';
+        } else {
+            $html .= '<p class="out-of-stock">Hết hàng</p>';
+        }
+        $html .= '</div>';
+        $html .= '</div>';
+    }
     return $html;
 }
 ?> 

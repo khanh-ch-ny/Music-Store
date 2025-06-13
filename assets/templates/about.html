@@ -3,138 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Giới thiệu - Music Store</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+    <title>Về chúng tôi - Music Store</title>
+    <link rel="stylesheet" href="/Music-Store/assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <!-- Header -->
     <header class="header">
         <nav class="navbar">
-            <a href="index.php" class="logo">
+            <a href="/Music-Store/index.php" class="logo">
                 <i class="fas fa-music"></i> Music Store
             </a>
             <ul class="nav-links">
-                <li><a href="index.php">Trang chủ</a></li>
-                <li><a href="products.php">Sản phẩm</a></li>
-                {{user_links}}
+                <li><a href="/Music-Store/index.php">Trang chủ</a></li>
+                <li><a href="/Music-Store/products.php">Sản phẩm</a></li>
+                <li><a href="/Music-Store/cart.php">Giỏ hàng</a></li>
+                <li><a href="/Music-Store/logout.php">Đăng xuất</a></li>
             </ul>
-            <button class="mobile-menu-btn">
-                <i class="fas fa-bars"></i>
-            </button>
         </nav>
     </header>
 
     <!-- Main Content -->
     <main class="container">
-        <div class="about-page">
-            <section class="about-hero">
-                <h1>Về Music Store</h1>
-                <p>Nơi đam mê âm nhạc được nuôi dưỡng</p>
-            </section>
-
-            <section class="about-story">
-                <h2>Câu chuyện của chúng tôi</h2>
-                <div class="story-content">
-                    <div class="story-text">
-                        <p>Music Store được thành lập với tình yêu và đam mê dành cho âm nhạc. Chúng tôi tin rằng mỗi người đều xứng đáng có cơ hội trải nghiệm niềm vui khi chơi nhạc cụ.</p>
-                        <p>Từ những ngày đầu tiên, chúng tôi đã cam kết mang đến cho khách hàng những sản phẩm chất lượng cao nhất, cùng với dịch vụ tư vấn chuyên nghiệp và hỗ trợ tận tâm.</p>
-                    </div>
-                    <div class="story-image">
-                        <img src="assets/images/about/store.jpg" alt="Music Store" loading="lazy">
-                    </div>
+        <div class="about-section">
+            <h1>Về Music Store</h1>
+            
+            <div class="about-content">
+                <div class="about-image">
+                    <img src="/Music-Store/assets/images/about/store.jpg" alt="Music Store">
                 </div>
-            </section>
-
-            <section class="about-mission">
-                <h2>Sứ mệnh của chúng tôi</h2>
-                <div class="mission-content">
-                    <div class="mission-item">
-                        <i class="fas fa-guitar"></i>
-                        <h3>Chất lượng sản phẩm</h3>
-                        <p>Chúng tôi chỉ cung cấp những nhạc cụ chất lượng cao từ các thương hiệu uy tín trên thế giới.</p>
-                    </div>
-                    <div class="mission-item">
-                        <i class="fas fa-users"></i>
-                        <h3>Phục vụ khách hàng</h3>
-                        <p>Đội ngũ tư vấn chuyên nghiệp luôn sẵn sàng hỗ trợ khách hàng 24/7.</p>
-                    </div>
-                    <div class="mission-item">
-                        <i class="fas fa-heart"></i>
-                        <h3>Lan tỏa đam mê</h3>
-                        <p>Chúng tôi mong muốn truyền cảm hứng và nuôi dưỡng tình yêu âm nhạc trong cộng đồng.</p>
-                    </div>
+                
+                <div class="about-text">
+                    <h2>Câu chuyện của chúng tôi</h2>
+                    <p>Music Store được thành lập với tình yêu và đam mê dành cho âm nhạc. Chúng tôi tin rằng âm nhạc là ngôn ngữ chung của nhân loại, kết nối mọi người và mang lại niềm vui cho cuộc sống.</p>
+                    
+                    <h2>Sứ mệnh của chúng tôi</h2>
+                    <p>Chúng tôi cam kết mang đến cho khách hàng những sản phẩm âm nhạc chất lượng cao, từ nhạc cụ đến phụ kiện, với dịch vụ tận tâm và chuyên nghiệp.</p>
+                    
+                    <h2>Giá trị cốt lõi</h2>
+                    <ul>
+                        <li><strong>Chất lượng:</strong> Cam kết cung cấp sản phẩm chất lượng cao</li>
+                        <li><strong>Đáng tin cậy:</strong> Xây dựng niềm tin với khách hàng</li>
+                        <li><strong>Đổi mới:</strong> Luôn cập nhật xu hướng âm nhạc mới</li>
+                        <li><strong>Phục vụ:</strong> Tận tâm phục vụ khách hàng</li>
+                    </ul>
                 </div>
-            </section>
+            </div>
 
-            <section class="about-values">
-                <h2>Giá trị cốt lõi</h2>
-                <div class="values-content">
-                    <div class="value-item">
-                        <h3>Chất lượng</h3>
-                        <p>Cam kết mang đến những sản phẩm và dịch vụ tốt nhất cho khách hàng.</p>
-                    </div>
-                    <div class="value-item">
-                        <h3>Chuyên nghiệp</h3>
-                        <p>Đội ngũ nhân viên được đào tạo bài bản, luôn sẵn sàng phục vụ.</p>
-                    </div>
-                    <div class="value-item">
-                        <h3>Đổi mới</h3>
-                        <p>Không ngừng cải tiến và phát triển để mang đến trải nghiệm tốt nhất.</p>
-                    </div>
-                    <div class="value-item">
-                        <h3>Trách nhiệm</h3>
-                        <p>Đảm bảo sự hài lòng của khách hàng là ưu tiên hàng đầu.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="about-team">
+            <div class="team-section">
                 <h2>Đội ngũ của chúng tôi</h2>
-                <div class="team-content">
-                    {{team_members}}
+                <div class="team-grid">
+                    <div class="team-member">
+                        <img src="/Music-Store/assets/images/team/member1.jpg" alt="Team Member">
+                        <h3>Nguyễn Văn A</h3>
+                        <p>Giám đốc</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="/Music-Store/assets/images/team/member2.jpg" alt="Team Member">
+                        <h3>Trần Thị B</h3>
+                        <p>Quản lý cửa hàng</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="/Music-Store/assets/images/team/member3.jpg" alt="Team Member">
+                        <h3>Lê Văn C</h3>
+                        <p>Chuyên gia âm nhạc</p>
+                    </div>
                 </div>
-            </section>
+            </div>
 
-            <section class="about-cta">
-                <h2>Sẵn sàng trải nghiệm?</h2>
-                <p>Khám phá ngay bộ sưu tập nhạc cụ chất lượng cao của chúng tôi</p>
-                <a href="products.php" class="btn btn-primary">Mua sắm ngay</a>
-            </section>
+            <div class="contact-section">
+                <h2>Liên hệ với chúng tôi</h2>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <p>123 Đường ABC, Quận XYZ, TP. Hồ Chí Minh</p>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <p>0123 456 789</p>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <p>info@musicstore.com</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Về chúng tôi</h3>
-                    <p>Music Store - Cửa hàng nhạc cụ trực tuyến hàng đầu Việt Nam</p>
-                </div>
-                <div class="footer-section">
-                    <h3>Liên kết nhanh</h3>
-                    <ul>
-                        <li><a href="about.php">Giới thiệu</a></li>
-                        <li><a href="products.php">Sản phẩm</a></li>
-                        <li><a href="contact.php">Liên hệ</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Theo dõi chúng tôi</h3>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-            </div>
             <div class="footer-bottom">
                 <p>&copy; {{current_year}} Music Store. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
-    <script src="assets/js/script.js"></script>
+    <script src="/Music-Store/assets/js/script.js"></script>
 </body>
 </html> 

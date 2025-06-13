@@ -4,49 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Giỏ hàng - Music Store</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="/Music-Store/assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <!-- Header -->
     <header class="header">
         <nav class="navbar">
-            <a href="index.php" class="logo">
+            <a href="/Music-Store/index.php" class="logo">
                 <i class="fas fa-music"></i> Music Store
             </a>
             <ul class="nav-links">
-                <li><a href="index.php">Trang chủ</a></li>
-                <li><a href="products.php">Sản phẩm</a></li>
-                {{user_links}}
+                <li><a href="/Music-Store/index.php">Trang chủ</a></li>
+                <li><a href="/Music-Store/products.php">Sản phẩm</a></li>
+                <li><a href="/Music-Store/cart.php" class="active">Giỏ hàng</a></li>
+                <li><a href="/Music-Store/logout.php">Đăng xuất</a></li>
             </ul>
-            <button class="mobile-menu-btn">
-                <i class="fas fa-bars"></i>
-            </button>
         </nav>
     </header>
 
     <!-- Main Content -->
     <main class="container">
-        <h1>Giỏ hàng</h1>
-
+        <h1>Giỏ hàng của bạn</h1>
+        
         {{error_message}}
         {{success_message}}
 
-        <div class="cart-container">
-            {{cart_items}}
+        {{#if cart_items}}
+            <div class="cart-items">
+                {{#each cart_items}}
+                    <div class="cart-item">
+                        <img src="/Music-Store/assets/images/products/{{image}}" alt="{{name}}" class="cart-item-image">
+                        <div class="cart-item-details">
+                            <h3>{{name}}</h3>
+                            <p class="price">{{price}} VNĐ</p>
+                            <form method="POST" action="/Music-Store/cart.php" class="quantity-form">
+                                <input type="hidden" name="product_id" value="{{id}}">
+                                <input type="number" name="quantity" value="{{quantity}}" min="1" max="{{stock}}" class="quantity-input">
+                                <button type="submit" name="update_quantity" class="btn btn-secondary">Cập nhật</button>
+                                <button type="submit" name="remove_item" class="btn btn-danger">Xóa</button>
+                            </form>
+                        </div>
+                    </div>
+                {{/each}}
+            </div>
 
             <div class="cart-summary">
-                <div class="cart-total">
-                    <strong>Tổng cộng:</strong>
-                    <span class="total-amount">{{cart_total}}</span>
-                </div>
-
-                <div class="cart-actions">
-                    <a href="products.php" class="btn btn-outline">Tiếp tục mua sắm</a>
-                    <a href="payment.php" class="btn btn-primary">Thanh toán</a>
-                </div>
+                <h3>Tổng cộng: {{total}} VNĐ</h3>
+                <a href="/Music-Store/payment.php" class="btn btn-primary">Thanh toán</a>
             </div>
-        </div>
+        {{else}}
+            <p class="empty-cart">Giỏ hàng của bạn đang trống.</p>
+            <a href="/Music-Store/products.php" class="btn btn-primary">Tiếp tục mua sắm</a>
+        {{/if}}
     </main>
 
     <!-- Footer -->
@@ -58,6 +68,6 @@
         </div>
     </footer>
 
-    <script src="assets/js/script.js"></script>
+    <script src="/Music-Store/assets/js/script.js"></script>
 </body>
 </html> 

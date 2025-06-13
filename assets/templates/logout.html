@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng xuất - Music Store</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <a href="index.php" class="logo">
+                <i class="fas fa-music"></i> Music Store
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.php">Trang chủ</a></li>
+                <li><a href="products.php">Sản phẩm</a></li>
+                <li><a href="login.php">Đăng nhập</a></li>
+            </ul>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <div class="auth-container">
+            <div class="logout-message">
+                <i class="fas fa-check-circle"></i>
+                <h1>Đăng xuất thành công</h1>
+                <p>Cảm ơn bạn đã sử dụng Music Store</p>
+                <div class="logout-actions">
+                    <a href="login.php" class="btn btn-primary">Đăng nhập lại</a>
+                    <a href="index.php" class="btn btn-outline">Về trang chủ</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; {{current_year}} Music Store. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+</body>
+</html> 

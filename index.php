@@ -16,9 +16,9 @@ $featured_products = getFeaturedProducts();
 
 // Prepare template data
 $data = [
-    'products' => $products,
-    'categories_list' => $categories,
-    'featured_products' => $featured_products,
+    'products_list' => renderProductsList($products),
+    'categories_list' => renderCategoriesList($categories),
+    'featured_products' => renderFeaturedProducts($featured_products),
     'current_category' => $category_id,
     'cart_link' => isLoggedIn() ? 'cart.php' : 'login.php',
     'user_links' => renderUserLinks()

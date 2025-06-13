@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng ký - Music Store</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="/Music-Store/assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <!-- Header -->
     <header class="header">
         <nav class="navbar">
-            <a href="index.php" class="logo">
+            <a href="/Music-Store/index.php" class="logo">
                 <i class="fas fa-music"></i> Music Store
             </a>
             <ul class="nav-links">
-                <li><a href="index.php">Trang chủ</a></li>
-                <li><a href="login.php">Đăng nhập</a></li>
+                <li><a href="/Music-Store/index.php">Trang chủ</a></li>
+                <li><a href="/Music-Store/login.php">Đăng nhập</a></li>
             </ul>
         </nav>
     </header>
@@ -29,7 +29,7 @@
             {{error_message}}
             {{success_message}}
 
-            <form method="POST" action="register.php" class="auth-form" id="register-form">
+            <form method="POST" action="/Music-Store/register.php" class="auth-form" id="register-form">
                 <div class="form-group">
                     <label for="username" class="form-label">Tên đăng nhập *</label>
                     <input type="text" id="username" name="username" class="form-control" value="{{username}}" required>
@@ -69,7 +69,7 @@
             </form>
 
             <p class="auth-links">
-                Đã có tài khoản? <a href="login.php">Đăng nhập</a>
+                Đã có tài khoản? <a href="/Music-Store/login.php">Đăng nhập</a>
             </p>
         </div>
     </main>
@@ -83,7 +83,7 @@
         </div>
     </footer>
 
-    <script src="assets/js/script.js"></script>
+    <script src="/Music-Store/assets/js/script.js"></script>
     <script>
         document.getElementById('register-form').addEventListener('submit', function(e) {
             if (!validateForm('register-form')) {

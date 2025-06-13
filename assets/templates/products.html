@@ -4,20 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sản phẩm - Music Store</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="/Music-Store/assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <!-- Header -->
     <header class="header">
         <nav class="navbar">
-            <a href="index.php" class="logo">
+            <a href="/Music-Store/index.php" class="logo">
                 <i class="fas fa-music"></i> Music Store
             </a>
             <ul class="nav-links">
-                <li><a href="index.php">Trang chủ</a></li>
-                <li><a href="products.php" class="active">Sản phẩm</a></li>
-                {{user_links}}
+                <li><a href="/Music-Store/index.php">Trang chủ</a></li>
+                <li><a href="/Music-Store/products.php" class="active">Sản phẩm</a></li>
+                <li><a href="/Music-Store/cart.php">Giỏ hàng</a></li>
+                <li><a href="/Music-Store/logout.php">Đăng xuất</a></li>
             </ul>
             <button class="mobile-menu-btn">
                 <i class="fas fa-bars"></i>
@@ -30,16 +31,29 @@
         <div class="products-header">
             <h1>Sản phẩm</h1>
             <div class="products-filter">
-                <select id="category-filter" class="form-control">
-                    <option value="all">Tất cả danh mục</option>
-                    {{category_options}}
-                </select>
-                <select id="sort-filter" class="form-control">
-                    <option value="newest">Mới nhất</option>
-                    <option value="price_asc">Giá tăng dần</option>
-                    <option value="price_desc">Giá giảm dần</option>
-                    <option value="name_asc">Tên A-Z</option>
-                </select>
+                <form method="GET" action="/Music-Store/products.php" class="filter-form">
+                    <div class="form-group">
+                        <label for="category">Danh mục:</label>
+                        <select name="category" id="category" class="form-control">
+                            <option value="">Tất cả</option>
+                            {{#each categories}}
+                                <option value="{{id}}" {{#if selected}}selected{{/if}}>{{name}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sort">Sắp xếp:</label>
+                        <select name="sort" id="sort" class="form-control">
+                            <option value="name_asc" {{#if sort_name_asc}}selected{{/if}}>Tên A-Z</option>
+                            <option value="name_desc" {{#if sort_name_desc}}selected{{/if}}>Tên Z-A</option>
+                            <option value="price_asc" {{#if sort_price_asc}}selected{{/if}}>Giá tăng dần</option>
+                            <option value="price_desc" {{#if sort_price_desc}}selected{{/if}}>Giá giảm dần</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Lọc</button>
+                </form>
             </div>
         </div>
 
@@ -64,19 +78,19 @@
         </div>
     </footer>
 
-    <script src="assets/js/script.js"></script>
+    <script src="/Music-Store/assets/js/script.js"></script>
     <script>
         // Xử lý filter sản phẩm
-        document.getElementById('category-filter').addEventListener('change', function() {
+        document.getElementById('category').addEventListener('change', function() {
             const category = this.value;
-            window.location.href = `products.php?category=${category}`;
+            window.location.href = `/Music-Store/products.php?category=${category}`;
         });
 
-        document.getElementById('sort-filter').addEventListener('change', function() {
+        document.getElementById('sort').addEventListener('change', function() {
             const sort = this.value;
             const urlParams = new URLSearchParams(window.location.search);
             urlParams.set('sort', sort);
-            window.location.href = `products.php?${urlParams.toString()}`;
+            window.location.href = `/Music-Store/products.php?${urlParams.toString()}`;
         });
     </script>
 </body>
