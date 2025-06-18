@@ -1,0 +1,91 @@
+<h1>Thanh toán</h1>
+
+{{error_message}}
+{{success_message}}
+
+<div class="payment-container">
+    <!-- Order Summary -->
+    <div class="order-summary">
+        <h2>Đơn hàng của bạn</h2>
+        <div class="cart-items">
+            {{#each cart_items}}
+                <div class="cart-item">
+                    <img src="/Music-Store/assets/images/products/{{image}}" alt="{{name}}" class="cart-item-image">
+                    <div class="cart-item-details">
+                        <h3>{{name}}</h3>
+                        <p class="price">{{price}} VNĐ</p>
+                        <p class="quantity">Số lượng: {{quantity}}</p>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+        <div class="order-total">
+            <h3>Tổng cộng: {{total}} VNĐ</h3>
+        </div>
+    </div>
+
+    <!-- Payment Form -->
+    <div class="payment-form">
+        <h2>Thông tin thanh toán</h2>
+        <form method="POST" action="/Music-Store/payment.php" id="payment-form">
+            <div class="form-group">
+                <label for="fullname">Họ và tên *</label>
+                <input type="text" id="fullname" name="fullname" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email *</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Số điện thoại *</label>
+                <input type="tel" id="phone" name="phone" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Địa chỉ *</label>
+                <textarea id="address" name="address" class="form-control" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="payment_method">Phương thức thanh toán *</label>
+                <select id="payment_method" name="payment_method" class="form-control" required>
+                    <option value="">Chọn phương thức thanh toán</option>
+                    <option value="cod">Thanh toán khi nhận hàng (COD)</option>
+                    <option value="bank">Chuyển khoản ngân hàng</option>
+                </select>
+            </div>
+
+            <div id="bank-details" class="bank-details" style="display: none;">
+                <h3>Thông tin chuyển khoản</h3>
+                <p>Ngân hàng: Vietcombank</p>
+                <p>Số tài khoản: 1234567890</p>
+                <p>Chủ tài khoản: Music Store</p>
+                <p>Nội dung chuyển khoản: [Mã đơn hàng]</p>
+            </div>
+
+            <div class="form-group">
+                <label for="notes">Ghi chú</label>
+                <textarea id="notes" name="notes" class="form-control"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Đặt hàng</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Hiển thị/ẩn thông tin chuyển khoản
+    document.getElementById('payment_method').addEventListener('change', function() {
+        const bankDetails = document.getElementById('bank-details');
+        bankDetails.style.display = this.value === 'bank' ? 'block' : 'none';
+    });
+
+    // Validate form
+    document.getElementById('payment-form').addEventListener('submit', function(e) {
+        if (!validateForm('payment-form')) {
+            e.preventDefault();
+        }
+    });
+</script> 

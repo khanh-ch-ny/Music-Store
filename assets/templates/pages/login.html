@@ -1,0 +1,42 @@
+<h1>Đăng nhập</h1>
+
+{{error_message}}
+{{success_message}}
+
+<div class="auth-container">
+    <form method="POST" action="/Music-Store/login.php" id="login-form">
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Mật khẩu</label>
+            <input type="password" id="password" name="password" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label class="checkbox-container">
+                <input type="checkbox" name="remember" id="remember">
+                <span class="checkmark"></span>
+                Ghi nhớ đăng nhập
+            </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Đăng nhập</button>
+    </form>
+
+    <div class="auth-links">
+        <p>Chưa có tài khoản? <a href="/Music-Store/register.php">Đăng ký ngay</a></p>
+        <p><a href="/Music-Store/forgot-password.php">Quên mật khẩu?</a></p>
+    </div>
+</div>
+
+<script>
+    // Validate form
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+        if (!validateForm('login-form')) {
+            e.preventDefault();
+        }
+    });
+</script> 

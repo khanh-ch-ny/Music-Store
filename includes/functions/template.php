@@ -4,59 +4,54 @@ function renderTemplate($template, $data = []) {
     // Add current year to all templates
     $data['current_year'] = date('Y');
     
-    // Get template file path
-    $template_file = __DIR__ . '/../../assets/templates/' . $template . '.html';
+    // Read the main layout
+    $layout = file_get_contents(__DIR__ . '/../../assets/templates/layouts/main.html');
     
-    // Check if template exists
-    if (!file_exists($template_file)) {
-        throw new Exception("Template file not found: $template");
-    }
+    // Read the page content
+    $content = file_get_contents(__DIR__ . '/../../assets/templates/pages/' . $template . '.html');
     
-    // Read template content
-    $content = file_get_contents($template_file);
+    // Replace content placeholder in layout
+    $layout = str_replace('{{content}}', $content, $layout);
+    
+    // Process partials
+    $layout = preg_replace_callback('/{{> ([^}]+)}}/', function($matches) {
+        $partial = file_get_contents(__DIR__ . '/../../assets/templates/partials/' . $matches[1] . '.html');
+        return $partial;
+    }, $layout);
     
     // Replace template variables
     foreach ($data as $key => $value) {
-        $content = str_replace('{{' . $key . '}}', $value, $content);
+        $layout = str_replace('{{' . $key . '}}', $value, $layout);
     }
     
     // Handle conditional statements
-    $content = preg_replace_callback('/{{#if\s+(.*?)}}(.*?){{\/if}}/s', function($matches) use ($data) {
-        $condition = trim($matches[1]);
+    $layout = preg_replace_callback('/{{#if ([^}]+)}}(.*?){{\/if}}/s', function($matches) use ($data) {
+        $condition = $matches[1];
         $content = $matches[2];
-        
-        // Simple condition evaluation
-        if (strpos($condition, '>') !== false) {
-            list($var, $val) = explode('>', $condition);
-            $var = trim($var);
-            $val = trim($val);
-            return isset($data[$var]) && $data[$var] > $val ? $content : '';
-        }
-        
         return isset($data[$condition]) && $data[$condition] ? $content : '';
-    }, $content);
+    }, $layout);
     
     // Handle loops
-    $content = preg_replace_callback('/{{#each\s+(.*?)}}(.*?){{\/each}}/s', function($matches) use ($data) {
-        $items = $data[$matches[1]] ?? [];
+    $layout = preg_replace_callback('/{{#each ([^}]+)}}(.*?){{\/each}}/s', function($matches) use ($data) {
+        $array = $data[$matches[1]] ?? [];
         $template = $matches[2];
         $result = '';
         
-        foreach ($items as $item) {
-            $item_content = $template;
+        foreach ($array as $item) {
+            $itemTemplate = $template;
             foreach ($item as $key => $value) {
-                $item_content = str_replace('{{' . $key . '}}', $value, $item_content);
+                $itemTemplate = str_replace('{{' . $key . '}}', $value, $itemTemplate);
             }
-            $result .= $item_content;
+            $result .= $itemTemplate;
         }
         
         return $result;
-    }, $content);
+    }, $layout);
     
     // Remove any remaining template variables
-    $content = preg_replace('/{{.*?}}/', '', $content);
+    $layout = preg_replace('/{{[^}]+}}/', '', $layout);
     
-    return $content;
+    return $layout;
 }
 
 // Helper function to render error messages

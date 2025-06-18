@@ -1,0 +1,156 @@
+<h1>Tài khoản của tôi</h1>
+
+{{error_message}}
+{{success_message}}
+
+<div class="account-container">
+    <!-- Account Navigation -->
+    <div class="account-nav">
+        <ul>
+            <li class="active"><a href="#profile">Thông tin cá nhân</a></li>
+            <li><a href="#orders">Đơn hàng của tôi</a></li>
+            <li><a href="#change-password">Đổi mật khẩu</a></li>
+        </ul>
+    </div>
+
+    <!-- Account Content -->
+    <div class="account-content">
+        <!-- Profile Section -->
+        <div id="profile" class="account-section active">
+            <h2>Thông tin cá nhân</h2>
+            <form method="POST" action="/Music-Store/account.php" id="profile-form">
+                <input type="hidden" name="action" value="update_profile">
+                
+                <div class="form-group">
+                    <label for="fullname">Họ và tên</label>
+                    <input type="text" id="fullname" name="fullname" class="form-control" value="{{user.fullname}}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" class="form-control" value="{{user.email}}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Số điện thoại</label>
+                    <input type="tel" id="phone" name="phone" class="form-control" value="{{user.phone}}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Địa chỉ</label>
+                    <textarea id="address" name="address" class="form-control">{{user.address}}</textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Cập nhật thông tin</button>
+            </form>
+        </div>
+
+        <!-- Orders Section -->
+        <div id="orders" class="account-section">
+            <h2>Đơn hàng của tôi</h2>
+            {{#if orders}}
+                <div class="orders-list">
+                    {{#each orders}}
+                        <div class="order-item">
+                            <div class="order-header">
+                                <h3>Đơn hàng #{{id}}</h3>
+                                <span class="order-date">{{order_date}}</span>
+                                <span class="order-status {{status}}">{{status_text}}</span>
+                            </div>
+                            <div class="order-details">
+                                <div class="order-products">
+                                    {{#each products}}
+                                        <div class="order-product">
+                                            <img src="/Music-Store/assets/images/products/{{image}}" alt="{{name}}">
+                                            <div class="product-info">
+                                                <h4>{{name}}</h4>
+                                                <p class="price">{{price}} VNĐ</p>
+                                                <p class="quantity">Số lượng: {{quantity}}</p>
+                                            </div>
+                                        </div>
+                                    {{/each}}
+                                </div>
+                                <div class="order-summary">
+                                    <p>Tổng tiền: {{total}} VNĐ</p>
+                                    <p>Phương thức thanh toán: {{payment_method}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
+            {{else}}
+                <p class="no-orders">Bạn chưa có đơn hàng nào.</p>
+            {{/if}}
+        </div>
+
+        <!-- Change Password Section -->
+        <div id="change-password" class="account-section">
+            <h2>Đổi mật khẩu</h2>
+            <form method="POST" action="/Music-Store/account.php" id="change-password-form">
+                <input type="hidden" name="action" value="change_password">
+                
+                <div class="form-group">
+                    <label for="current_password">Mật khẩu hiện tại</label>
+                    <input type="password" id="current_password" name="current_password" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="new_password">Mật khẩu mới</label>
+                    <input type="password" id="new_password" name="new_password" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm_password">Xác nhận mật khẩu mới</label>
+                    <input type="password" id="confirm_password" name="confirm_password" class="form-control" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Đổi mật khẩu</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Tab navigation
+    document.querySelectorAll('.account-nav a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Update active tab
+            document.querySelectorAll('.account-nav li').forEach(li => li.classList.remove('active'));
+            this.parentElement.classList.add('active');
+            
+            // Show active section
+            const targetId = this.getAttribute('href').substring(1);
+            document.querySelectorAll('.account-section').forEach(section => {
+                section.classList.remove('active');
+                if (section.id === targetId) {
+                    section.classList.add('active');
+                }
+            });
+        });
+    });
+
+    // Form validation
+    document.getElementById('profile-form').addEventListener('submit', function(e) {
+        if (!validateForm('profile-form')) {
+            e.preventDefault();
+        }
+    });
+
+    document.getElementById('change-password-form').addEventListener('submit', function(e) {
+        if (!validateForm('change-password-form')) {
+            e.preventDefault();
+            return;
+        }
+
+        // Check password match
+        const newPassword = document.getElementById('new_password').value;
+        const confirmPassword = document.getElementById('confirm_password').value;
+        
+        if (newPassword !== confirmPassword) {
+            e.preventDefault();
+            alert('Mật khẩu xác nhận không khớp!');
+        }
+    });
+</script> 

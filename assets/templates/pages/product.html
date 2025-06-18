@@ -1,0 +1,53 @@
+<div class="product-detail">
+    <div class="product-image">
+        <img src="/Music-Store/assets/images/products/{{image}}" alt="{{name}}">
+    </div>
+    
+    <div class="product-info">
+        <h1>{{name}}</h1>
+        <p class="price">{{price}} VNĐ</p>
+        <p class="stock {{#if in_stock}}in-stock{{else}}out-of-stock{{/if}}">
+            {{#if in_stock}}Còn hàng{{else}}Hết hàng{{/if}}
+        </p>
+        
+        <div class="product-description">
+            <h3>Mô tả sản phẩm</h3>
+            <p>{{description}}</p>
+        </div>
+
+        {{#if in_stock}}
+            <form method="POST" action="/Music-Store/cart.php" class="add-to-cart-form">
+                <input type="hidden" name="product_id" value="{{id}}">
+                <div class="form-group">
+                    <label for="quantity">Số lượng:</label>
+                    <input type="number" id="quantity" name="quantity" value="1" min="1" max="{{stock}}" class="quantity-input">
+                </div>
+                <button type="submit" name="add_to_cart" class="btn btn-primary">Thêm vào giỏ</button>
+            </form>
+        {{/if}}
+
+        <div class="product-meta">
+            <p><strong>Danh mục:</strong> {{category_name}}</p>
+            <p><strong>Mã sản phẩm:</strong> {{id}}</p>
+        </div>
+    </div>
+</div>
+
+<!-- Related Products -->
+{{#if related_products}}
+    <div class="related-products">
+        <h2>Sản phẩm liên quan</h2>
+        <div class="products-grid">
+            {{#each related_products}}
+                <div class="product-card">
+                    <img src="/Music-Store/assets/images/products/{{image}}" alt="{{name}}" class="product-image">
+                    <div class="product-details">
+                        <h3>{{name}}</h3>
+                        <p class="price">{{price}} VNĐ</p>
+                        <a href="/Music-Store/product.php?id={{id}}" class="btn btn-secondary">Chi tiết</a>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    </div>
+{{/if}} 
