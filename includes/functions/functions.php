@@ -13,7 +13,7 @@ function isLoggedIn() {
 
 // Check if user is admin
 function isAdmin() {
-    return isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1;
+    return isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
 }
 
 // Redirect function with session check
@@ -225,6 +225,72 @@ function getCartItemCount($user_id) {
     return $result['count'];
 }
 
+function getUserOrders($user_id) {
+    global $conn;
+    $orders = getRows("SELECT * FROM orders WHERE user_id = ? ORDER BY created_at DESC", [$user_id], 'i');
+
+    if (empty($orders)) {
+        return [];
+    }
+
+    $order_ids = array_column($orders, 'id');
+    $placeholders = rtrim(str_repeat('?,', count($order_ids)), ',');
+    $types = str_repeat('i', count($order_ids));
+
+    $sql_items = "SELECT oi.*, p.name, p.image_url as image
+                  FROM order_items oi
+                  JOIN products p ON oi.product_id = p.id
+                  WHERE oi.order_id IN ($placeholders)";
+    
+    $items = getRows($sql_items, $order_ids, $types);
+
+    $items_by_order = [];
+    foreach ($items as $item) {
+        $items_by_order[$item['order_id']][] = $item;
+    }
+
+    foreach ($orders as $key => $order) {
+        $orders[$key]['products'] = $items_by_order[$order['id']] ?? [];
+        $orders[$key]['order_date'] = date('d/m/Y', strtotime($order['created_at']));
+        $orders[$key]['total'] = formatPrice($order['total_amount']);
+    }
+
+    return $orders;
+}
+
+function getOrder($order_id, $user_id) {
+    $order = getRow("SELECT * FROM orders WHERE id = ? AND user_id = ?", [$order_id, $user_id], 'ii');
+
+    if (!$order) {
+        return null;
+    }
+
+    $sql_items = "SELECT oi.*, p.name, p.image_url as image, oi.price
+                  FROM order_items oi
+                  JOIN products p ON oi.product_id = p.id
+                  WHERE oi.order_id = ?";
+    
+    $items = getRows($sql_items, [$order_id], 'i');
+
+    foreach ($items as &$item) {
+        $item['price'] = formatPrice($item['price']);
+    }
+    
+    $order['products'] = $items;
+    $order['order_date'] = date('d/m/Y', strtotime($order['created_at']));
+    $order['total'] = formatPrice($order['total_amount']);
+
+    $status_map = [
+        'pending' => 'Đang chờ xử lý',
+        'processing' => 'Đang xử lý',
+        'completed' => 'Đã hoàn thành',
+        'cancelled' => 'Đã hủy'
+    ];
+    $order['status_text'] = $status_map[$order['status']] ?? 'Không xác định';
+
+    return $order;
+}
+
 // Template functions
 function renderError($message) {
     return '<div class="alert alert-danger">' . htmlspecialchars($message) . '</div>';
@@ -272,7 +338,7 @@ function renderUserLinks() {
     if (isLoggedIn()) {
         $cart_count = getCartItemCount($_SESSION['user_id']);
         $html .= '<li><a href="cart.php" class="cart-link"><i class="fas fa-shopping-cart"></i> Giỏ hàng <span class="cart-count">' . $cart_count . '</span></a></li>';
-        $html .= '<li><a href="profile.php">Tài khoản</a></li>';
+        $html .= '<li><a href="account.php">Tài khoản</a></li>';
         if (isAdmin()) {
             $html .= '<li><a href="admin/index.php">Quản trị</a></li>';
         }

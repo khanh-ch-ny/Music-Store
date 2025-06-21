@@ -1,4 +1,5 @@
 <?php
+require_once 'includes/config/config.php';
 require_once 'includes/functions/functions.php';
 require_once 'includes/functions/template.php';
 
@@ -17,18 +18,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($username) || empty($password)) {
         $error = 'Vui lòng điền đầy đủ thông tin đăng nhập.';
     } else {
-        // Get user data
-        $sql = "SELECT * FROM users WHERE username = '$username'";
-        $user = getRow($sql);
+        // Get user data using prepared statement
+        $sql = "SELECT * FROM users WHERE username = ?";
+        $user = getRow($sql, [$username], 's');
 
         if ($user && password_verify($password, $user['password'])) {
             // Set session
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
-            $_SESSION['is_admin'] = $user['is_admin'];
+            $_SESSION['role'] = $user['role'];
 
             // Redirect based on user role
-            if ($user['is_admin']) {
+            if ($user['role'] === 'admin') {
                 redirect('admin/index.php');
             } else {
                 redirect('index.php');

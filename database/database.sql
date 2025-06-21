@@ -89,4 +89,13 @@
 
     -- Insert sample admin user
     INSERT INTO users (username, password, email, full_name, role) VALUES
-    ('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin@musicstore.com', 'Admin User', 'admin'); 
+    ('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin@musicstore.com', 'Admin User', 'admin');
+
+    -- Password resets table
+    CREATE TABLE IF NOT EXISTS password_resets (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        email VARCHAR(100) NOT NULL,
+        token VARCHAR(255) UNIQUE NOT NULL,
+        expires_at BIGINT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ); 

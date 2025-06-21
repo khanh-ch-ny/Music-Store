@@ -19,10 +19,21 @@ function renderTemplate($template, $data = []) {
         return $partial;
     }, $layout);
     
-    // Replace template variables
-    foreach ($data as $key => $value) {
-        $layout = str_replace('{{' . $key . '}}', $value, $layout);
-    }
+    // Replace template variables with dot notation support
+    $layout = preg_replace_callback('/{{\s*([a-zA-Z0-9_.]+)\s*}}/', function($matches) use ($data) {
+        $keys = explode('.', $matches[1]);
+        $value = $data;
+        foreach ($keys as $key) {
+            if (is_array($value) && isset($value[$key])) {
+                $value = $value[$key];
+            } else {
+                // Not found, return the original placeholder to be handled by other parts of the template engine
+                return $matches[0];
+            }
+        }
+        // If the final value is an array, it's likely for an #each block, so we don't replace it here.
+        return is_array($value) ? $matches[0] : $value;
+    }, $layout);
     
     // Handle conditional statements
     $layout = preg_replace_callback('/{{#if ([^}]+)}}(.*?){{\/if}}/s', function($matches) use ($data) {
