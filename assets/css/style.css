@@ -1057,7 +1057,7 @@ main.container {
     display: flex;
     gap: 1rem;
     justify-content: center;
-<<<<<<< HEAD
+
 }
 
 .category-image {
@@ -1256,6 +1256,6 @@ main.container {
     0% { transform: translateY(0px); }
     50% { transform: translateY(-20px); }
     100% { transform: translateY(0px); }
-=======
->>>>>>> 849ea43a0ac79dc1cbe06ac5695df1d1e45adf4f
+
+
 } 
