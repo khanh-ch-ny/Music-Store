@@ -423,20 +423,27 @@ function renderReviewForm($product_id) {
 
 function renderCategoriesList($categories) {
     if (empty($categories)) {
-        return '<p class="no-categories">Không có danh mục nào.</p>';
+        return '';
     }
 
     $html = '';
     foreach ($categories as $category) {
-        $html .= '<a href="/Music-Store/products.php?category=' . $category['id'] . '" class="category-card">';
-        $html .= '<i class="fas fa-music"></i>';
-        $html .= '<h3>' . htmlspecialchars($category['name']) . '</h3>';
-        if (!empty($category['description'])) {
-            $html .= '<p>' . htmlspecialchars($category['description']) . '</p>';
-        }
+        // Prepare inline style for background image
+        $style = !empty($category['image_url']) 
+            ? "background-image: url('" . htmlspecialchars($category['image_url']) . "');" 
+            : "background-color: #333;"; // Fallback color if no image
+
+        $html .= '<a href="/Music-Store/products.php?category=' . $category['id'] . '" class="category-card" style="' . $style . '">';
+        
+        // Content wrapper for positioning text
+        $html .= '<div class="category-card-content">';
+        $html .= '<h3 class="category-title">' . htmlspecialchars($category['name']) . '</h3>';
+        $html .= '<p class="category-description">' . htmlspecialchars($category['description']) . '</p>';
+        $html .= '</div>';
+
         $html .= '</a>';
     }
-    
+
     return $html;
 }
 
