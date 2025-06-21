@@ -1,4 +1,5 @@
 <?php
+require_once 'includes/config/config.php';
 require_once 'includes/functions/functions.php';
 
 // Start session if not already started

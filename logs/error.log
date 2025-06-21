@@ -1,0 +1,36 @@
+[22-Jun-2025 01:28:12 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught TypeError: str_replace(): Argument #2 ($replace) must be of type string when argument #1 ($search) is a string in C:\xampp\htdocs\Music-Store\includes\functions\template.php:24
+Stack trace:
+#0 C:\xampp\htdocs\Music-Store\includes\functions\template.php(24): str_replace('{{user}}', Array, '<!DOCTYPE html>...')
+#1 C:\xampp\htdocs\Music-Store\account.php(74): renderTemplate('account', Array)
+#2 {main}
+  thrown in C:\xampp\htdocs\Music-Store\includes\functions\template.php on line 24
+[22-Jun-2025 01:28:18 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught TypeError: str_replace(): Argument #2 ($replace) must be of type string when argument #1 ($search) is a string in C:\xampp\htdocs\Music-Store\includes\functions\template.php:24
+Stack trace:
+#0 C:\xampp\htdocs\Music-Store\includes\functions\template.php(24): str_replace('{{user}}', Array, '<!DOCTYPE html>...')
+#1 C:\xampp\htdocs\Music-Store\account.php(74): renderTemplate('account', Array)
+#2 {main}
+  thrown in C:\xampp\htdocs\Music-Store\includes\functions\template.php on line 24
+[22-Jun-2025 01:28:23 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught TypeError: str_replace(): Argument #2 ($replace) must be of type string when argument #1 ($search) is a string in C:\xampp\htdocs\Music-Store\includes\functions\template.php:24
+Stack trace:
+#0 C:\xampp\htdocs\Music-Store\includes\functions\template.php(24): str_replace('{{user}}', Array, '<!DOCTYPE html>...')
+#1 C:\xampp\htdocs\Music-Store\account.php(74): renderTemplate('account', Array)
+#2 {main}
+  thrown in C:\xampp\htdocs\Music-Store\includes\functions\template.php on line 24
+[22-Jun-2025 01:33:00 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught TypeError: str_replace(): Argument #2 ($replace) must be of type string when argument #1 ($search) is a string in C:\xampp\htdocs\Music-Store\includes\functions\template.php:24
+Stack trace:
+#0 C:\xampp\htdocs\Music-Store\includes\functions\template.php(24): str_replace('{{user}}', Array, '<!DOCTYPE html>...')
+#1 C:\xampp\htdocs\Music-Store\account.php(74): renderTemplate('account', Array)
+#2 {main}
+  thrown in C:\xampp\htdocs\Music-Store\includes\functions\template.php on line 24
+[22-Jun-2025 01:33:15 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught TypeError: str_replace(): Argument #2 ($replace) must be of type string when argument #1 ($search) is a string in C:\xampp\htdocs\Music-Store\includes\functions\template.php:24
+Stack trace:
+#0 C:\xampp\htdocs\Music-Store\includes\functions\template.php(24): str_replace('{{user}}', Array, '<!DOCTYPE html>...')
+#1 C:\xampp\htdocs\Music-Store\account.php(74): renderTemplate('account', Array)
+#2 {main}
+  thrown in C:\xampp\htdocs\Music-Store\includes\functions\template.php on line 24
+[22-Jun-2025 01:33:18 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught TypeError: str_replace(): Argument #2 ($replace) must be of type string when argument #1 ($search) is a string in C:\xampp\htdocs\Music-Store\includes\functions\template.php:24
+Stack trace:
+#0 C:\xampp\htdocs\Music-Store\includes\functions\template.php(24): str_replace('{{user}}', Array, '<!DOCTYPE html>...')
+#1 C:\xampp\htdocs\Music-Store\account.php(74): renderTemplate('account', Array)
+#2 {main}
+  thrown in C:\xampp\htdocs\Music-Store\includes\functions\template.php on line 24

@@ -98,6 +98,10 @@ body {
     padding: 0 20px;
 }
 
+main.container {
+    padding-top: 90px;
+}
+
 /* Product grid */
 .product-grid {
     display: grid;
@@ -401,28 +405,65 @@ body {
 }
 
 .category-card {
-    background-color: #f8f9fa;
-    border-radius: 10px;
-    padding: 2rem;
-    text-align: center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Align content to the bottom */
+    min-height: 280px;
+    padding: 25px;
+    border-radius: 12px;
+    overflow: hidden;
     text-decoration: none;
-    color: #2c3e50;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    color: #fff;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.4s ease;
+}
+
+.category-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 10%, rgba(0, 0, 0, 0) 70%);
+    transition: background 0.4s ease;
 }
 
 .category-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transform: translateY(-8px);
 }
 
-.category-card i {
-    font-size: 2.5rem;
-    color: #e74c3c;
-    margin-bottom: 1rem;
+.category-card:hover::before {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 20%, rgba(0, 0, 0, 0.1) 80%);
 }
 
-.category-card h3 {
-    font-size: 1.2rem;
+.category-card-content {
+    position: relative;
+    z-index: 2;
+}
+
+.category-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 0;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+}
+
+.category-description {
+    font-size: 0.95rem;
+    color: #e0e0e0;
+    line-height: 1.4;
+    margin-top: 5px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.category-card:hover .category-description {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 /* Featured Products Section */
@@ -968,13 +1009,55 @@ body {
 }
 
 /* --- Category Card Image --- */
-.category-image-wrapper {
-    width: 80px;  /* Kích thước của vùng chứa ảnh */
-    height: 80px; /* Kích thước của vùng chứa ảnh */
-    margin-bottom: 15px;
+.category-image-wrapper, .category-image, .category-icon {
+    display: none;
+}
+
+/* --- Hero Section --- */
+.hero {
+    padding: 60px 20px;
+    text-align: center;
+    background-color: #f4f4f4; /* Màu nền dự phòng */
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Lớp phủ màu đen, độ mờ 50% */
+    z-index: 1;
+}
+
+/* Đảm bảo nội dung chữ nằm trên lớp phủ */
+.hero .hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+/* Tinh chỉnh lại chữ để đẹp hơn trên nền ảnh */
+.hero h1 {
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+
+.hero-content h1 {
+  font-size: 2.5rem;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.hero-buttons {
     display: flex;
-    align-items: center;
+    gap: 1rem;
     justify-content: center;
+<<<<<<< HEAD
 }
 
 .category-image {
@@ -1173,4 +1256,6 @@ body {
     0% { transform: translateY(0px); }
     50% { transform: translateY(-20px); }
     100% { transform: translateY(0px); }
+=======
+>>>>>>> 849ea43a0ac79dc1cbe06ac5695df1d1e45adf4f
 } 
