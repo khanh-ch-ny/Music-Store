@@ -989,3 +989,188 @@ body {
     color: #e8491d; /* Màu của icon */
     margin-bottom: 15px;
 } 
+
+/* --- Hero Section --- */
+.hero {
+    padding: 60px 20px;
+    text-align: center;
+    background-color: #f4f4f4; /* Màu nền dự phòng */
+  }
+  
+  /* --- Hero Section Background --- */
+  .hero {
+      position: relative;
+      padding: 100px 20px; /* Tăng không gian để ảnh nền hiển thị rõ hơn */
+      color: #fff; /* Đổi màu chữ thành trắng để nổi bật trên nền tối */
+      background-image: url('../images/backgrounds/dungcu.jpg'); /* Đã sửa lại đường dẫn tương đối cho đúng */
+      background-size: cover;
+      background-position: center;
+      text-align: center;
+  }
+  
+  /* Thêm một lớp phủ mờ để chữ dễ đọc hơn */
+  .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5); /* Lớp phủ màu đen, độ mờ 50% */
+      z-index: 1;
+  }
+  
+  /* Đảm bảo nội dung chữ nằm trên lớp phủ */
+  .hero .hero-content {
+      position: relative;
+      z-index: 2;
+  }
+  
+  /* Tinh chỉnh lại chữ để đẹp hơn trên nền ảnh */
+  .hero h1 {
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+  }
+  
+  
+  .hero-content h1 {
+    font-size: 2.5rem;
+  }
+  
+  /* --- New Immersive Category Card Styling --- */
+  .category-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end; /* Align content to the bottom */
+      min-height: 280px;
+      padding: 25px;
+      border-radius: 12px;
+      overflow: hidden;
+      text-decoration: none;
+      color: #fff;
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.4s ease;
+  }
+  
+  .category-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 10%, rgba(0, 0, 0, 0) 70%);
+      transition: background 0.4s ease;
+  }
+  
+  .category-card:hover {
+      transform: translateY(-8px);
+  }
+  
+  .category-card:hover::before {
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 20%, rgba(0, 0, 0, 0.1) 80%);
+  }
+  
+  .category-card-content {
+      position: relative;
+      z-index: 2;
+  }
+  
+  .category-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin: 0;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+  }
+  
+  .category-description {
+      font-size: 0.95rem;
+      color: #e0e0e0;
+      line-height: 1.4;
+      margin-top: 5px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  
+  .category-card:hover .category-description {
+      opacity: 1;
+      transform: translateY(0);
+  }
+  
+  /* Cleanup old styles */
+  .category-image-wrapper, .category-image, .category-icon {
+      display: none;
+  }
+
+/* --- Floating Instruments Animation V2 - More Dynamic --- */
+.floating-instruments {
+    width: 100%;
+    height: 150px; /* Tăng chiều cao để có không gian cho hiệu ứng bồng bềnh */
+    display: flex;
+    overflow: hidden;
+    padding: 30px 0;
+    background: #111;
+    white-space: nowrap;
+    position: relative;
+}
+
+.floating-instruments:before,
+.floating-instruments:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 250px;
+    height: 100%;
+    z-index: 2;
+}
+
+.floating-instruments:before {
+    left: 0;
+    background: linear-gradient(to right, #111 20%, rgba(17, 17, 17, 0) 100%);
+}
+
+.floating-instruments:after {
+    right: 0;
+    background: linear-gradient(to left, #111 20%, rgba(17, 17, 17, 0) 100%);
+}
+
+.floating-instruments .instrument-wrapper {
+    display: block;
+    animation: slide 30s linear infinite; /* Tốc độ trôi đồng đều */
+    margin: 0 50px;
+}
+
+.floating-instruments .instrument {
+    display: block;
+    position: relative;
+    height: 85px; /* Kích thước đồng đều cho tất cả ảnh */
+    filter: grayscale(40%) opacity(0.85); /* Làm cho ảnh sáng và rõ hơn */
+    transition: filter 0.5s ease;
+    animation: float 6s ease-in-out infinite; /* Tốc độ bồng bềnh đồng đều */
+}
+
+.floating-instruments:hover .instrument-wrapper {
+    animation-play-state: paused;
+}
+
+.instrument-wrapper:hover .instrument {
+    filter: grayscale(0%) opacity(1);
+    transform: scale(1.1);
+}
+
+.instrument-wrapper:hover {
+    animation-play-state: paused !important;
+}
+
+@keyframes slide {
+    from { transform: translateX(0%); }
+    to { transform: translateX(-100%); }
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+    100% { transform: translateY(0px); }
+} 
