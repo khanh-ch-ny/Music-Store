@@ -19,9 +19,8 @@ $data = [
     'products_list' => renderProductsList($products),
     'categories_list' => renderCategoriesList($categories),
     'featured_products' => renderFeaturedProducts($featured_products),
-    'user_links' => isLoggedIn() ? 
-        '<li><a href="/Music-Store/cart.php">Giỏ hàng</a></li><li><a href="/Music-Store/logout.php">Đăng xuất</a></li>' : 
-        '<li><a href="/Music-Store/login.php">Đăng nhập</a></li><li><a href="/Music-Store/register.php">Đăng ký</a></li>'
+    'user_links' => renderHeaderIcons(),
+    'navigation_menu' => renderNavigationMenu()
 ];
 
 // Render template

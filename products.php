@@ -40,7 +40,8 @@ $data = [
     'category_options' => $category_options,
     'products_list' => renderProductsList($products),
     'pagination' => $pagination,
-    'user_links' => renderUserLinks(),
+    'user_links' => renderHeaderIcons(),
+    'navigation_menu' => renderNavigationMenu(),
     'error_message' => !empty($error_message) ? $error_message : '',
     'success_message' => !empty($success_message) ? $success_message : ''
 ];

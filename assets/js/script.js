@@ -47,6 +47,163 @@ document.addEventListener('DOMContentLoaded', function() {
             filterByCategory(category);
         });
     }
+
+    // Search Overlay
+    const searchOverlay = document.querySelector('.search-overlay');
+    const openSearchBtn = document.querySelector('#open-search-btn');
+    const closeSearchBtn = document.querySelector('.close-search-btn');
+    const searchInputOverlay = document.querySelector('.search-overlay-input');
+
+    if (searchOverlay && openSearchBtn && closeSearchBtn) {
+        openSearchBtn.addEventListener('click', () => {
+            searchOverlay.classList.add('active');
+            // Focus the input field when overlay is opened
+            setTimeout(() => searchInputOverlay.focus(), 300); 
+        });
+
+        closeSearchBtn.addEventListener('click', () => {
+            searchOverlay.classList.remove('active');
+        });
+
+        // Close on ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && searchOverlay.classList.contains('active')) {
+                searchOverlay.classList.remove('active');
+            }
+        });
+    }
+
+    // New Interactive Cart Page Logic
+    const cartContainer = document.querySelector('.cart-page-container');
+    if (cartContainer) {
+        cartContainer.addEventListener('click', e => {
+            if (e.target.classList.contains('quantity-btn')) {
+                const button = e.target;
+                const productId = button.dataset.productId;
+                const quantityInput = cartContainer.querySelector(`.quantity-input[data-product-id="${productId}"]`);
+                let currentQuantity = parseInt(quantityInput.value);
+
+                if (button.classList.contains('plus')) {
+                    currentQuantity++;
+                } else if (button.classList.contains('minus') && currentQuantity > 1) {
+                    currentQuantity--;
+                }
+                
+                quantityInput.value = currentQuantity;
+                updateCartItem(productId, currentQuantity);
+            }
+
+            if (e.target.classList.contains('remove-item-btn')) {
+                const button = e.target;
+                const productId = button.dataset.productId;
+                if (confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')) {
+                    removeCartItem(productId);
+                }
+            }
+        });
+    }
+
+    // Desktop Navigation Dropdowns
+    const navItems = document.querySelectorAll('.desktop-nav .has-dropdown');
+
+    navItems.forEach(item => {
+        const link = item.querySelector('.nav-link');
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Close other open dropdowns
+            navItems.forEach(otherItem => {
+                if (otherItem !== item) {
+                    otherItem.classList.remove('active');
+                }
+            });
+            // Toggle current dropdown
+            item.classList.toggle('active');
+        });
+    });
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.has-dropdown')) {
+            navItems.forEach(item => {
+                item.classList.remove('active');
+            });
+        }
+    });
+
+    // Cart Drawer (Off-canvas)
+    const cartIcon = document.querySelector('.cart-icon-wrapper');
+    const cartDrawer = document.getElementById('cart-drawer');
+    const cartDrawerOverlay = document.getElementById('cart-drawer-overlay');
+    const cartDrawerClose = document.getElementById('cart-drawer-close');
+    const cartDrawerContent = document.getElementById('cart-drawer-content');
+
+    function openCartDrawer() {
+        cartDrawer.classList.add('active');
+        cartDrawerOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        // Load mini cart content
+        if (cartDrawerContent) {
+            fetch('/Music-Store/includes/ajax/mini_cart.php')
+                .then(res => res.text())
+                .then(html => {
+                    cartDrawerContent.innerHTML = html;
+                });
+        }
+    }
+    function closeCartDrawer() {
+        cartDrawer.classList.remove('active');
+        cartDrawerOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    if (cartIcon && cartDrawer && cartDrawerOverlay && cartDrawerClose) {
+        cartIcon.addEventListener('click', function(e) {
+            e.preventDefault();
+            openCartDrawer();
+        });
+        cartDrawerOverlay.addEventListener('click', closeCartDrawer);
+        cartDrawerClose.addEventListener('click', closeCartDrawer);
+    }
+
+    // Mini cart: tăng/giảm/xóa sản phẩm
+    document.addEventListener('click', function(e) {
+        // Tăng số lượng
+        if (e.target.classList.contains('cart-drawer-qty-btn')) {
+            e.preventDefault();
+            const btn = e.target;
+            const productId = btn.dataset.productId;
+            const isPlus = btn.classList.contains('plus');
+            const qtyInput = btn.parentElement.querySelector('.cart-drawer-qty-input');
+            let qty = parseInt(qtyInput.value);
+            if (isPlus) qty++;
+            else if (qty > 1) qty--;
+            // Gửi AJAX cập nhật
+            fetch('/Music-Store/includes/ajax/update_cart.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `product_id=${productId}&quantity=${qty}`
+            })
+            .then(res => res.json())
+            .then(data => {
+                openCartDrawer(); // reload lại mini cart
+                updateHeaderCartCount(data.cart_count);
+            });
+        }
+        // Xóa sản phẩm
+        if (e.target.classList.contains('cart-drawer-remove')) {
+            e.preventDefault();
+            const productId = e.target.dataset.productId;
+            fetch('/Music-Store/includes/ajax/remove_from_cart.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `product_id=${productId}`
+            })
+            .then(res => res.json())
+            .then(data => {
+                openCartDrawer(); // reload lại mini cart
+                updateHeaderCartCount(data.cart_count);
+            });
+        }
+    });
 });
 
 // Add to cart function
@@ -383,4 +540,150 @@ window.addEventListener('scroll', () => {
         header.classList.add('scroll-up');
     }
     lastScroll = currentScroll;
-}); 
+});
+
+function updateCartItem(productId, quantity) {
+    fetch('/Music-Store/includes/ajax/update_cart.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `product_id=${productId}&quantity=${quantity}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            updateCartPage(data);
+            updateHeaderCartCount(data.cart_count);
+        } else {
+            alert(data.message || 'Lỗi cập nhật giỏ hàng.');
+        }
+    })
+    .catch(console.error);
+}
+
+function removeCartItem(productId) {
+    fetch('/Music-Store/includes/ajax/remove_from_cart.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `product_id=${productId}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const itemElement = document.querySelector(`.cart-item[data-product-id="${productId}"]`);
+            if (itemElement) {
+                itemElement.remove();
+            }
+            updateCartPage(data);
+            updateHeaderCartCount(data.cart_count);
+
+            // Check if cart is now empty
+            if (data.cart_count === 0) {
+                document.querySelector('.cart-layout').innerHTML = `
+                    <div class="empty-cart-container">
+                        <img src="/Music-Store/assets/images/backgrounds/empty-cart.svg" alt="Giỏ hàng trống" class="empty-cart-image">
+                        <h2>Giỏ hàng của bạn đang trống</h2>
+                        <p>Hãy thêm sản phẩm vào giỏ hàng nhé.</p>
+                        <a href="/Music-Store/products.php" class="btn-primary">Bắt đầu mua sắm</a>
+                    </div>`;
+            }
+        } else {
+            alert(data.message || 'Lỗi xóa sản phẩm.');
+        }
+    })
+    .catch(console.error);
+}
+
+function updateCartPage(data) {
+    const { item_total, cart_total } = data;
+    
+    // Update item total
+    if (item_total) {
+        const itemTotalElement = document.querySelector(`.item-total[data-product-id="${item_total.product_id}"]`);
+        if (itemTotalElement) {
+            itemTotalElement.textContent = formatPrice(item_total.total);
+        }
+    }
+
+    // Update summary
+    const subtotalElement = document.getElementById('summary-subtotal');
+    const totalElement = document.getElementById('summary-total');
+    if (subtotalElement && totalElement) {
+        subtotalElement.textContent = formatPrice(cart_total);
+        totalElement.textContent = formatPrice(cart_total);
+    }
+}
+
+function updateHeaderCartCount(count) {
+    const cartCountElement = document.querySelector('.cart-count');
+    if (cartCountElement) {
+        cartCountElement.textContent = count;
+        cartCountElement.style.display = count > 0 ? 'flex' : 'none';
+    }
+}
+
+// Banner Slider Logic
+(function() {
+    const slides = document.querySelectorAll('.banner-slide');
+    const bg = document.getElementById('bannerSliderBg');
+    const dots = document.querySelectorAll('.timer-dot');
+    const circles = document.querySelectorAll('.timer-circle');
+    const SLIDE_TIME = 5000;
+    let current = 0;
+    let timer = null;
+    let startTime = null;
+    let animFrame = null;
+
+    function setSlide(idx, instant) {
+        slides.forEach((slide, i) => {
+            slide.classList.toggle('active', i === idx);
+        });
+        dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === idx);
+        });
+        // Set background
+        if (bg && slides[idx]) {
+            bg.style.backgroundImage = `url('${slides[idx].src}')`;
+        }
+        // Reset timer circles
+        circles.forEach((c, i) => {
+            c.style.strokeDashoffset = i === idx ? 75.4 : 75.4;
+        });
+        if (!instant) animateTimer(idx);
+    }
+
+    function animateTimer(idx) {
+        let start = performance.now();
+        function frame(now) {
+            let elapsed = now - start;
+            let progress = Math.min(elapsed / SLIDE_TIME, 1);
+            circles[idx].style.strokeDashoffset = 75.4 * (1 - progress);
+            if (progress < 1) {
+                animFrame = requestAnimationFrame(frame);
+            } else {
+                nextSlide();
+            }
+        }
+        cancelAnimationFrame(animFrame);
+        animFrame = requestAnimationFrame(frame);
+    }
+
+    function nextSlide() {
+        current = (current + 1) % slides.length;
+        setSlide(current);
+    }
+
+    function jumpTo(idx) {
+        current = idx;
+        setSlide(current);
+    }
+
+    dots.forEach((dot, i) => {
+        dot.addEventListener('click', () => {
+            jumpTo(i);
+        });
+    });
+
+    // Init
+    setSlide(0, true);
+    animateTimer(0);
+})(); 

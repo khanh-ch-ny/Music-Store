@@ -1,39 +1,29 @@
-<h1>Đăng nhập</h1>
-
-{{error_message}}
-{{success_message}}
-
-<div class="auth-container">
-    <form method="POST" action="/Music-Store/login.php" id="login-form">
-        <div class="form-group">
-            <label for="username">Tên đăng nhập</label>
-            <input type="text" id="username" name="username" class="form-control" required>
+<div class="login-page-wrapper">
+    <h1 class="login-title">Đăng nhập</h1>
+    <div class="login-breadcrumb">Trang chủ &gt; Tài khoản</div>
+    {{error_message}}
+    {{success_message}}
+    <div class="login-2col">
+        <div class="login-col login-form-col">
+            <h2>Đăng nhập</h2>
+            <form method="POST" action="/Music-Store/login.php" id="login-form">
+                <input type="text" id="username" name="username" class="form-control" placeholder="Email" required value="{{username}}">
+                <input type="password" id="password" name="password" class="form-control" placeholder="Mật khẩu" required>
+                <div class="login-links">
+                    <a href="/Music-Store/forgot-password.php">Quên Mật khẩu?</a>
+                </div>
+                <button type="submit" class="btn btn-primary login-btn">Đăng nhập</button>
+            </form>
         </div>
-
-        <div class="form-group">
-            <label for="password">Mật khẩu</label>
-            <input type="password" id="password" name="password" class="form-control" required>
+        <div class="login-col login-register-col">
+            <h2>Khách hàng mới</h2>
+            <p>Đăng ký quyền truy cập Giảm giá sớm cộng với hàng mới, xu hướng và chương trình khuyến mãi mới được thiết kế riêng. Để chọn không tham gia, hãy nhấp vào hủy đăng ký trong email của chúng tôi.</p>
+            <a href="/Music-Store/register.php" class="btn btn-primary login-register-btn">Đăng ký</a>
         </div>
-
-        <div class="form-group">
-            <label class="checkbox-container">
-                <input type="checkbox" name="remember" id="remember">
-                <span class="checkmark"></span>
-                Ghi nhớ đăng nhập
-            </label>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Đăng nhập</button>
-    </form>
-
-    <div class="auth-links">
-        <p>Chưa có tài khoản? <a href="/Music-Store/register.php">Đăng ký ngay</a></p>
-        <p><a href="/Music-Store/forgot-password.php">Quên mật khẩu?</a></p>
     </div>
 </div>
 
 <script>
-    // Validate form
     document.getElementById('login-form').addEventListener('submit', function(e) {
         if (!validateForm('login-form')) {
             e.preventDefault();

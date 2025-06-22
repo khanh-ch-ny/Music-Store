@@ -34,3 +34,43 @@ Stack trace:
 #1 C:\xampp\htdocs\Music-Store\account.php(74): renderTemplate('account', Array)
 #2 {main}
   thrown in C:\xampp\htdocs\Music-Store\includes\functions\template.php on line 24
+[22-Jun-2025 16:14:50 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function renderUserLinks() in F:\xampp\htdocs\Music-Store\about.php:9
+Stack trace:
+#0 {main}
+  thrown in F:\xampp\htdocs\Music-Store\about.php on line 9
+[22-Jun-2025 16:14:53 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function renderUserLinks() in F:\xampp\htdocs\Music-Store\about.php:9
+Stack trace:
+#0 {main}
+  thrown in F:\xampp\htdocs\Music-Store\about.php on line 9
+[22-Jun-2025 17:19:51 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function renderUserLinks() in F:\xampp\htdocs\Music-Store\about.php:9
+Stack trace:
+#0 {main}
+  thrown in F:\xampp\htdocs\Music-Store\about.php on line 9
+[22-Jun-2025 17:22:01 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function renderUserLinks() in F:\xampp\htdocs\Music-Store\about.php:9
+Stack trace:
+#0 {main}
+  thrown in F:\xampp\htdocs\Music-Store\about.php on line 9
+[22-Jun-2025 17:39:39 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function renderUserLinks() in F:\xampp\htdocs\Music-Store\about.php:9
+Stack trace:
+#0 {main}
+  thrown in F:\xampp\htdocs\Music-Store\about.php on line 9
+[22-Jun-2025 18:11:00 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function renderUserLinks() in F:\xampp\htdocs\Music-Store\about.php:9
+Stack trace:
+#0 {main}
+  thrown in F:\xampp\htdocs\Music-Store\about.php on line 9
+[22-Jun-2025 18:49:58 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function renderUserLinks() in F:\xampp\htdocs\Music-Store\about.php:9
+Stack trace:
+#0 {main}
+  thrown in F:\xampp\htdocs\Music-Store\about.php on line 9
+[22-Jun-2025 19:25:34 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function renderUserLinks() in F:\xampp\htdocs\Music-Store\about.php:9
+Stack trace:
+#0 {main}
+  thrown in F:\xampp\htdocs\Music-Store\about.php on line 9
+[22-Jun-2025 19:27:13 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function renderUserLinks() in F:\xampp\htdocs\Music-Store\about.php:9
+Stack trace:
+#0 {main}
+  thrown in F:\xampp\htdocs\Music-Store\about.php on line 9
+[22-Jun-2025 20:19:20 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught Error: Call to undefined function renderUserLinks() in F:\xampp\htdocs\Music-Store\about.php:9
+Stack trace:
+#0 {main}
+  thrown in F:\xampp\htdocs\Music-Store\about.php on line 9

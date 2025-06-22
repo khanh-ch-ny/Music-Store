@@ -32,7 +32,8 @@ $data = [
     'category_name' => $product['category_name'],
     'reviews' => renderReviewsList($reviews),
     'review_form' => isLoggedIn() ? renderReviewForm($product_id) : '<p>Vui lòng <a href="login.php">đăng nhập</a> để đánh giá sản phẩm.</p>',
-    'user_links' => renderUserLinks()
+    'user_links' => renderHeaderIcons(),
+    'navigation_menu' => renderNavigationMenu()
 ];
 
 // Render template

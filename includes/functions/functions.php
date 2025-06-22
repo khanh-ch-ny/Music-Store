@@ -301,64 +301,117 @@ function renderSuccess($message) {
 }
 
 function renderCartItems($items) {
+    ob_start();
     if (empty($items)) {
-        return '<p class="empty-cart">Giỏ hàng của bạn đang trống.</p>';
+        echo "<p>Your cart is empty.</p>";
+    } else {
+        foreach ($items as $item) : ?>
+            <div class="cart-item" data-cart-item="<?= $item['product_id'] ?>">
+                <img src="/assets/images/products/<?= htmlspecialchars($item['image_url']) ?>" alt="<?= htmlspecialchars($item['name']) ?>" class="cart-item-image">
+                <div class="cart-item-details">
+                    <h3><?= htmlspecialchars($item['name']) ?></h3>
+                    <p>Price: <?= formatPrice($item['price']) ?></p>
+                </div>
+                <div class="cart-quantity">
+                    <input type="number" class="cart-quantity-input" value="<?= $item['quantity'] ?>" min="1" max="<?= $item['stock'] ?>" data-product-id="<?= $item['product_id'] ?>">
+                </div>
+                <div class="cart-item-total">
+                    <p>Total: <?= formatPrice($item['price'] * $item['quantity']) ?></p>
+                </div>
+                <a href="#" class="remove-from-cart" data-product-id="<?= $item['product_id'] ?>">&times;</a>
+            </div>
+        <?php endforeach;
     }
-
-    $html = '<div class="cart-items">';
-    foreach ($items as $item) {
-        $html .= '<div class="cart-item">';
-        $html .= '<div class="cart-item-image">';
-        $html .= '<img src="' . (isset($item['image_url']) ? $item['image_url'] : 'images/default.png') . '" alt="' . $item['name'] . '">';
-        $html .= '</div>';
-        $html .= '<div class="cart-item-info">';
-        $html .= '<h3>' . $item['name'] . '</h3>';
-        $html .= '<p class="price">' . formatPrice($item['price']) . '</p>';
-        $html .= '<div class="quantity-controls">';
-        $html .= '<form method="POST" action="cart.php" class="update-quantity-form">';
-        $html .= '<input type="hidden" name="cart_id" value="' . $item['id'] . '">';
-        $html .= '<input type="number" name="quantity" value="' . $item['quantity'] . '" min="1" max="99">';
-        $html .= '<button type="submit" name="update_quantity" class="btn btn-sm">Cập nhật</button>';
-        $html .= '</form>';
-        $html .= '<form method="POST" action="cart.php" class="remove-item-form">';
-        $html .= '<input type="hidden" name="cart_id" value="' . $item['id'] . '">';
-        $html .= '<button type="submit" name="remove_item" class="btn btn-sm btn-danger">Xóa</button>';
-        $html .= '</form>';
-        $html .= '</div>';
-        $html .= '</div>';
-        $html .= '</div>';
-    }
-    $html .= '</div>';
-    
-    return $html;
+    return ob_get_clean();
 }
 
-function renderUserLinks() {
-    $html = '';
+function renderHeaderIcons() {
+    $cart_item_count = 0;
     if (isLoggedIn()) {
-        $cart_count = getCartItemCount($_SESSION['user_id']);
-        $html .= '<li><a href="cart.php" class="cart-link"><i class="fas fa-shopping-cart"></i> Giỏ hàng <span class="cart-count">' . $cart_count . '</span></a></li>';
-        $html .= '<li><a href="account.php">Tài khoản</a></li>';
-        if (isAdmin()) {
-            $html .= '<li><a href="admin/index.php">Quản trị</a></li>';
-        }
-        $html .= '<li><a href="logout.php">Đăng xuất</a></li>';
-    } else {
-        $html .= '<li><a href="login.php">Đăng nhập</a></li>';
-        $html .= '<li><a href="register.php">Đăng ký</a></li>';
+        $cart_item_count = getCartItemCount($_SESSION['user_id']);
     }
+
+    $icons = '';
+
+    // Account Icon
+    if (isLoggedIn()) {
+        $icons .= '<li><a href="/Music-Store/account.php" aria-label="Tài khoản"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></a></li>';
+    } else {
+        $icons .= '<li><a href="/Music-Store/login.php" aria-label="Đăng nhập"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></a></li>';
+    }
+
+    // Search Icon
+    $icons .= '<li><button id="open-search-btn" aria-label="Tìm kiếm"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button></li>';
+
+    // Cart Icon
+    $icons .= '<li>
+        <a href="/Music-Store/cart.php" class="cart-icon-wrapper" aria-label="Giỏ hàng">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+            <span class="cart-count">' . $cart_item_count . '</span>
+        </a>
+    </li>';
+    
+    if (isLoggedIn()) {
+        $icons .= '<li><a href="/Music-Store/logout.php" aria-label="Đăng xuất"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></a></li>';
+    }
+
+    return $icons;
+}
+
+function renderNavigationMenu() {
+    $danh_muc_items = [
+        'Accessories', 'Effects & Pedals', 'Strings', 'Electric Guitar', 
+        'Electric Bass', 'Acoustic Guitar', 'Classical Guitar', 'Amplifier', 
+        'Cabinet', 'Drums & Percussions', 'Audio & Recording'
+    ];
+    
+    $thuong_hieu_items = [
+        'Thương Hiệu Nổi Tiếng', 'Guitars', 'Effects & Pedals', 'Amplifier', 
+        'Phụ kiện', 'Khác', 'Drums & Percussions'
+    ];
+
+    $arrow_svg = '<svg class="dropdown-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/></svg>';
+    $dropdown_icon_svg = '<svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>';
+
+    $html = '<nav class="desktop-nav">';
+    $html .= '<ul class="desktop-nav-list">';
+    
+    // Danh Mục Dropdown
+    $html .= '<li class="nav-item has-dropdown">';
+    $html .= '<a href="#" class="nav-link">Danh Mục ' . $dropdown_icon_svg . '</a>';
+    $html .= '<div class="dropdown-menu">';
+    $html .= '<ul class="dropdown-list">';
+    foreach ($danh_muc_items as $item) {
+        $html .= '<li><a href="#">' . htmlspecialchars($item) . $arrow_svg . '</a></li>';
+    }
+    $html .= '</ul></div></li>';
+    
+    // Thương Hiệu Dropdown
+    $html .= '<li class="nav-item has-dropdown">';
+    $html .= '<a href="#" class="nav-link">Thương Hiệu ' . $dropdown_icon_svg . '</a>';
+    $html .= '<div class="dropdown-menu">';
+    $html .= '<ul class="dropdown-list">';
+    foreach ($thuong_hieu_items as $item) {
+         $html .= '<li><a href="#">' . htmlspecialchars($item) . $arrow_svg . '</a></li>';
+    }
+    $html .= '</ul></div></li>';
+
+    // New simple links
+    $html .= '<li class="nav-item"><a href="#" class="nav-link">Summer Sale</a></li>';
+    $html .= '<li class="nav-item"><a href="#" class="nav-link">Bài viết</a></li>';
+
+    $html .= '</ul></nav>';
     return $html;
 }
 
 // Product Functions
 function getProduct($id) {
     global $conn;
-    $id = (int)$id;
-    $sql = "SELECT p.*, c.name as category_name 
-            FROM products p 
-            LEFT JOIN categories c ON p.category_id = c.id 
-            WHERE p.id = $id";
-    return getRow($sql);
+    $stmt = $conn->prepare("SELECT p.*, c.name as category_name FROM products p LEFT JOIN categories c ON p.category_id = c.id WHERE p.id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_assoc();
 }
 
 function getProducts($category_id = 0, $sort = 'newest', $page = 1, $per_page = 12) {
@@ -405,7 +458,7 @@ function getProductReviews($product_id) {
 
 function renderProductsList($products) {
     if (empty($products)) {
-        return '<p class="no-products">Không tìm thấy sản phẩm nào.</p>';
+        return '<p class="text-center-message">Không tìm thấy sản phẩm nào.</p>';
     }
 
     $html = '';
@@ -509,13 +562,13 @@ function renderCategoriesList($categories) {
 
         $html .= '</a>';
     }
-
+    
     return $html;
 }
 
 function renderFeaturedProducts($products) {
     if (empty($products)) {
-        return '<p>Không có sản phẩm nổi bật.</p>';
+        return '<p class="text-center-message">Không có sản phẩm nổi bật.</p>';
     }
 
     $html = '';

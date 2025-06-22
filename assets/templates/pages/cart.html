@@ -1,32 +1,65 @@
-<h1>Giỏ hàng của bạn</h1>
+<div class="cart-page-container">
+    <h1>Giỏ hàng của bạn</h1>
 
-{{error_message}}
-{{success_message}}
-
-{{#if cart_items}}
-    <div class="cart-items">
-        {{#each cart_items}}
-            <div class="cart-item">
-                <img src="/Music-Store/assets/images/products/{{image}}" alt="{{name}}" class="cart-item-image">
-                <div class="cart-item-details">
-                    <h3>{{name}}</h3>
-                    <p class="price">{{price}} VNĐ</p>
-                    <form method="POST" action="/Music-Store/cart.php" class="quantity-form">
-                        <input type="hidden" name="product_id" value="{{id}}">
-                        <input type="number" name="quantity" value="{{quantity}}" min="1" max="{{stock}}" class="quantity-input">
-                        <button type="submit" name="update_quantity" class="btn btn-secondary">Cập nhật</button>
-                        <button type="submit" name="remove_item" class="btn btn-danger">Xóa</button>
-                    </form>
+    {{#if cart_items}}
+    <div class="cart-layout">
+        <div class="cart-items-list">
+            <div class="cart-header">
+                <div class="header-product">Sản phẩm</div>
+                <div class="header-quantity">Số lượng</div>
+                <div class="header-total">Tạm tính</div>
+            </div>
+            {{#each cart_items}}
+            <div class="cart-item" data-product-id="{{product_id}}">
+                <div class="item-product">
+                    <img src="/Music-Store/assets/uploads/products/{{image_url}}" alt="{{name}}" class="item-image">
+                    <div class="item-details">
+                        <p class="item-name">{{name}}</p>
+                        <p class="item-price">{{formatPrice price}}</p>
+                        <button class="remove-item-btn" data-product-id="{{product_id}}">Xóa</button>
+                    </div>
+                </div>
+                <div class="item-quantity">
+                    <div class="quantity-selector">
+                        <button class="quantity-btn minus" data-product-id="{{product_id}}">-</button>
+                        <input type="number" class="quantity-input" value="{{quantity}}" min="1" max="{{stock}}" data-product-id="{{product_id}}" readonly>
+                        <button class="quantity-btn plus" data-product-id="{{product_id}}">+</button>
+                    </div>
+                </div>
+                <div class="item-total" data-product-id="{{product_id}}">
+                    {{formatPrice (multiply price quantity)}}
                 </div>
             </div>
-        {{/each}}
-    </div>
+            {{/each}}
+        </div>
 
-    <div class="cart-summary">
-        <h3>Tổng cộng: {{total}} VNĐ</h3>
-        <a href="/Music-Store/payment.php" class="btn btn-primary">Thanh toán</a>
+        <div class="cart-summary">
+            <h2>Tổng kết đơn hàng</h2>
+            <div class="summary-row">
+                <span>Tạm tính</span>
+                <span id="summary-subtotal">{{formatPrice cart_total}}</span>
+            </div>
+            <div class="summary-row">
+                <span>Phí vận chuyển</span>
+                <span>Miễn phí</span>
+            </div>
+            <div class="summary-row total">
+                <span>Tổng cộng</span>
+                <span id="summary-total">{{formatPrice cart_total}}</span>
+            </div>
+            <a href="/Music-Store/payment.php" class="btn-checkout">Tiến hành thanh toán</a>
+            <a href="/Music-Store/products.php" class="continue-shopping">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/></svg>
+                Tiếp tục mua sắm
+            </a>
+        </div>
     </div>
-{{else}}
-    <p class="empty-cart">Giỏ hàng của bạn đang trống.</p>
-    <a href="/Music-Store/products.php" class="btn btn-primary">Tiếp tục mua sắm</a>
-{{/if}} 
+    {{else}}
+    <div class="empty-cart-container">
+        <img src="/Music-Store/assets/images/backgrounds/empty-cart.svg" alt="Giỏ hàng trống" class="empty-cart-image">
+        <h2>Giỏ hàng của bạn đang trống</h2>
+        <p>Looks like you haven't added anything to your cart yet.</p>
+        <a href="/Music-Store/products.php" class="btn-primary">Bắt đầu mua sắm</a>
+    </div>
+    {{/if}}
+</div> 

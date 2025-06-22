@@ -1,16 +1,55 @@
 <header class="header">
     <nav class="navbar">
-        <a href="/Music-Store/index.php" class="logo">
-            <i class="fas fa-music"></i> Music Store
-        </a>
-        <ul class="nav-links">
-            <li><a href="/Music-Store/index.php" {{#if active_home}}class="active"{{/if}}>Trang chủ</a></li>
-            <li><a href="/Music-Store/products.php" {{#if active_products}}class="active"{{/if}}>Sản phẩm</a></li>
-            
-            {{user_links}}
-        </ul>
-        <button class="mobile-menu-btn">
-            <i class="fas fa-bars"></i>
-        </button>
+        <div class="nav-left">
+            {{navigation_menu}}
+        </div>
+        <div class="logo-container">
+            <a href="/Music-Store/index.php" class="logo">
+                <img src="/Music-Store/assets/images/logo/main_logo.png" alt="Angel Wings Music Store Logo">
+            </a>
+        </div>
+        <div class="nav-right">
+            <ul class="nav-links">
+                {{user_links}}
+            </ul>
+        </div>
     </nav>
-</header> 
+</header>
+
+<div class="search-overlay">
+    <button class="close-search-btn" aria-label="Đóng tìm kiếm">&times;</button>
+    <div class="search-overlay-content">
+        <form action="/Music-Store/products.php" method="get" class="search-overlay-form">
+            <input type="search" name="search" placeholder="Nhập từ khóa để tìm kiếm..." class="search-overlay-input" autofocus>
+            <button type="submit" class="search-overlay-button" aria-label="Tìm kiếm">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </button>
+        </form>
+        <p class="search-overlay-hint">Nhấn Enter để tìm kiếm hoặc ESC để thoát.</p>
+    </div>
+</div>
+
+<!-- Cart Drawer (Off-canvas) -->
+<div id="cart-drawer-overlay" class="cart-drawer-overlay"></div>
+<div id="cart-drawer" class="cart-drawer">
+    <button class="cart-drawer-close" id="cart-drawer-close">&times;</button>
+    <h2 class="cart-drawer-title">Giỏ hàng</h2>
+    <div class="cart-drawer-content" id="cart-drawer-content">
+        <!-- Sản phẩm sẽ được render ở đây bằng JS hoặc PHP -->
+        <div class="cart-drawer-empty">Giỏ hàng của bạn đang trống.</div>
+    </div>
+    <div class="cart-drawer-footer">
+        <div class="cart-drawer-summary">
+            <div class="cart-drawer-row">
+                <span>Tổng phụ</span>
+                <span id="cart-drawer-subtotal">0đ</span>
+            </div>
+            <div class="cart-drawer-row">
+                <span>Vận chuyển</span>
+                <span>Miễn phí</span>
+            </div>
+        </div>
+        <button class="btn btn-primary cart-drawer-checkout">Kiểm tra lại</button>
+        <a href="/Music-Store/cart.php" class="cart-drawer-view">Xem giỏ hàng</a>
+    </div>
+</div> 
