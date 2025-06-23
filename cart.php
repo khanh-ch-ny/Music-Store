@@ -3,18 +3,20 @@ require_once 'includes/config/config.php';
 require_once 'includes/functions/functions.php';
 require_once 'includes/functions/template.php';
 
-// This page is for displaying the cart. Actions are handled by AJAX.
+session_start();
 
-// Redirect if not logged in
-if (!isLoggedIn()) {
-    redirect('/Music-Store/login.php');
+// Lấy dữ liệu giỏ hàng cho cả khách đã đăng nhập và chưa đăng nhập
+if (isLoggedIn()) {
+    $user_id = $_SESSION['user_id'];
+    $cart_items = getCartItems($user_id);
+    $cart_total = calculateCartTotal($user_id);
+} else {
+    $cart_items = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
+    $cart_total = 0;
+    foreach ($cart_items as $item) {
+        $cart_total += $item['price'] * $item['quantity'];
+    }
 }
-
-$user_id = $_SESSION['user_id'];
-
-// Get cart items and total
-$cart_items = getCartItems($user_id);
-$cart_total = calculateCartTotal($user_id);
 
 // Prepare template data
 $data = [

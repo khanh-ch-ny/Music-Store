@@ -30,22 +30,30 @@
     </div>
 </section>
 
-<!-- Mã của phần Danh mục sản phẩm bắt đầu từ đây -->
-<section class="categories-section">
+<!-- On Sale Section -->
+<section class="on-sale-section">
     <div class="container">
-        <h2 class="section-title">Danh mục sản phẩm</h2>
-        <div class="category-grid">
-            {{categories_list}}
+        <h2 class="section-title">On Sale</h2>
+        <!-- Chỗ này có thể để ảnh chia phần nếu muốn -->
+        <div class="products-grid">
+            {{on_sale_products}}
+        </div>
+        <div style="text-align:center; margin-top:24px;">
+            <a href="#" class="btn btn-primary shop-more-btn" id="on-sale-shop-more">Shop more</a>
         </div>
     </div>
 </section>
 
-<!-- Featured Products Section -->
-<section class="featured-products">
+<!-- New Arrivals Section -->
+<section class="new-arrivals-section">
     <div class="container">
-        <h2 class="section-title">Sản phẩm nổi bật</h2>
+        <h2 class="section-title">New Arrivals</h2>
+        <!-- Chỗ này có thể để ảnh chia phần nếu muốn -->
         <div class="products-grid">
-            {{featured_products}}
+            {{new_arrivals_products}}
+        </div>
+        <div style="text-align:center; margin-top:24px;">
+            <a href="#" class="btn btn-primary shop-more-btn" id="new-arrivals-shop-more">Shop more</a>
         </div>
     </div>
 </section>
